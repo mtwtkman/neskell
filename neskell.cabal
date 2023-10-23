@@ -1,0 +1,29 @@
+cabal-version:   3.0
+name:            neskell
+version:         0.1.0.0
+author:          924277+mtwtkman@users.noreply.github.com
+maintainer:      mtwtkman
+build-type:      Simple
+
+common warnings
+    ghc-options: -Wall
+
+common basic
+  build-depends: base
+  default-language: Haskell2010
+
+common test
+  hs-source-dirs: test
+
+executable neskell
+  import: warnings, basic
+  main-is: Main.hs
+  build-depends: neskell
+  hs-source-dirs: app
+
+library
+  import: warnings, basic
+  hs-source-dirs: src
+  exposed-modules: Neskell
+  other-modules:
+    Neskell.CPU
