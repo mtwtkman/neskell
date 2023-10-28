@@ -4,3 +4,5 @@ cradle:
       component: "lib:neskell"
     - path: "./app"
       component: "exe:neskell"
+    - path: "./test"
+      component: "test:test"

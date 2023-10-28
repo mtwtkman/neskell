@@ -1,6 +1,7 @@
 # References
 - [dev article](https://yizhang82.dev/nes-emu-overview)
 - [guide](https://www.nesdev.org/wiki/NES_reference_guide)
+- [6502 CPU spec](http://6502.org/users/obelisk/6502/)
 
 # Hardware specs
 ## CPU
@@ -46,6 +47,25 @@ That owns:
 That maybe owns:
 - battery-backed RAM
 - audio process unit
+
+# Modeling
+## Processing flow
+I can think about flow of playing with NES:
+
+- Player inserts a cartridge
+- Then the cartidge maps its ROM data into NES's memory
+- Then CPU reads ROM data which was mapped on memory
+- Then CPU waits PPU initialization
+- Then CPU writes read presentation data into PPU
+- Also CPU writes read sound data into APU
+- Then CPU waits user input via controller (Event loop is running)
+
+## Event handling
+CPU looks just an event handler and other hardwares are individual from CPU (Maybe we can call them event bus).
+So they run parallel each other.
+
+NES emulator needs functionality which works for making all hardware can communicate to each other. That is called "Master Clock" generally.
+
 
 # Developing Roadmap
 [This](https://yizhang82.dev/nes-emu-overview#have-a-plan) guiding well.

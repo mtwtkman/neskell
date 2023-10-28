@@ -11,13 +11,15 @@ mkShell {
     haskellPackages.haskell-debug-adapter
     haskellPackages.ghci-dap
     haskellPackages.cabal-fmt
+    cc65
   ];
   shellHook = ''
     alias b="cabal build"
     alias c="cabal clean"
     alias fmt="ormolu -i ./**/*.hs"
+    alias fmt:cabal="cabal-fmt -i ./neskell.cabal"
     alias repl="cabal repl"
     alias run="cabal run --"
-    alias t="cabal test"
+    alias t="cabal test --test-show-details=always --test-options=\"--color always\""
   '';
 }
