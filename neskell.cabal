@@ -21,35 +21,28 @@ executable neskell
 library
   import:          warnings, basic
   hs-source-dirs:  src
-  exposed-modules: Neskell
-  other-modules:
+  build-depends:
+    vector
+  exposed-modules:
+    Neskell
     Neskell.CPU
     Neskell.CPU.AddressingMode
     Neskell.CPU.Instruction
     Neskell.CPU.Opcode
-    Neskell.CPU.OperationHandler
-    Neskell.CPU.OperationHandler.Absolute
-    Neskell.CPU.OperationHandler.AbsoluteX
-    Neskell.CPU.OperationHandler.AbsoluteY
-    Neskell.CPU.OperationHandler.Accumulator
-    Neskell.CPU.OperationHandler.Immediate
-    Neskell.CPU.OperationHandler.Implied
-    Neskell.CPU.OperationHandler.IndexedIndirect
-    Neskell.CPU.OperationHandler.IndirectIndexed
-    Neskell.CPU.OperationHandler.Relative
-    Neskell.CPU.OperationHandler.ZeroPage
-    Neskell.CPU.OperationHandler.ZeroPageX
-    Neskell.CPU.OperationHandler.ZeroPageY
     Neskell.CPU.Register
     Neskell.CPU.Register.ProcessorStatus
+    Neskell.Memory
+    Neskell.Type
+    Neskell.Util
 
 test-suite test
   import:         warnings, basic
   type:           exitcode-stdio-1.0
   main-is:        tests.hs
   hs-source-dirs: test
-  other-modules:  Neskell.Test.CPU
   build-depends:
     , HUnit
     , tasty
     , tasty-hunit
+    , neskell
+    , vector

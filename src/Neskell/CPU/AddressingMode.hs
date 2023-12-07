@@ -15,3 +15,4 @@ data AddressingMode
   | Indirect
   | IndexedIndirect
   | IndirectIndexed
+  deriving (Eq, Show)

@@ -1,10 +1,10 @@
 module Main where
 
-import qualified Neskell.Test.CPU as CPUTest
 import Test.Tasty
+import qualified Neskell.Test.InterpretTest as InterpretTest
 
 main :: IO ()
 main = defaultMain tests
 
 tests :: TestTree
-tests = testGroup "Neskell tests" [CPUTest.tests]
+tests = testGroup "Neskell tests" [InterpretTest.tests]

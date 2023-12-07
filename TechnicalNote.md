@@ -2,6 +2,7 @@
 - [dev article](https://yizhang82.dev/nes-emu-overview)
 - [guide](https://www.nesdev.org/wiki/NES_reference_guide)
 - [6502 CPU spec](http://6502.org/users/obelisk/6502/)
+- [nes book](https://bugzmanov.github.io/nes_ebook/)
 
 # Hardware specs
 ## CPU

@@ -1,7 +1,7 @@
 module Neskell.CPU.Instruction where
 
 -- ref: http://6502.org/users/obelisk/6502/reference.html#NOP
-data Instruction = Official Official | Unofficial Unofficial | Unknown
+data Instruction = Official Official | Unofficial Unofficial deriving (Eq, Show)
 
 data Official
   = ADC
@@ -60,6 +60,7 @@ data Official
   | TXA
   | TXS
   | TYA
+  deriving (Eq, Show)
 
 data Unofficial
   = ALR
@@ -78,3 +79,4 @@ data Unofficial
   | SLO
   | SRE
   | STP
+  deriving (Eq, Show)
