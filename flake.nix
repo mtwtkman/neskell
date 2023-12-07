@@ -1,6 +1,3 @@
-let
-  ps1 = builtins.getEnv "PS1";
-in
 {
   description = "NES emulator implemented by Haskell";
   inputs = {
@@ -8,7 +5,7 @@ in
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  nixConfig.bash-prompt = "[dev]${ps1}";
+  nixConfig.bash-prompt-prefix = "\\e[34m[dev]\\e[0m ";
   outputs = { self, nixpkgs, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let pkgs = nixpkgs.legacyPackages.${system};
