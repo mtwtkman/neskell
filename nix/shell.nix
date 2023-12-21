@@ -11,6 +11,7 @@ mkShell {
     haskellPackages.haskell-debug-adapter
     haskellPackages.ghci-dap
     haskellPackages.cabal-fmt
+    haskellPackages.hoogle
     cc65
   ];
   shellHook = ''

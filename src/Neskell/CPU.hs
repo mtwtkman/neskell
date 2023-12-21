@@ -4,13 +4,18 @@ import Data.Bits ((.&.))
 import qualified Data.Vector as V
 import Data.Word (Word16, Word8)
 import Neskell.CPU.Instruction (Instruction (..), Official)
-import Neskell.CPU.Opcode (Opcode (opBytesSize, opInstruction), reifyByte, toOpcode)
+import Neskell.CPU.Opcode (
+  Opcode (opBytesSize, opInstruction),
+  reifyByte,
+  toOpcode,
+ )
 import Neskell.CPU.Register (Register, register)
 import Neskell.Type (
-  Error (OpcodeError, DecodeError),
+  DecodeError (OpcodeNotFound),
+  Error (DecodeError, OpcodeError),
   OpcodeError (UnofficialOpcodeNotSupported),
   OperandBody,
-  Result, DecodeError (OpcodeNotFound),
+  Result,
  )
 
 data CPU = CPU
@@ -18,6 +23,7 @@ data CPU = CPU
   , cpuCycles :: Int
   , cpuPageCrossing :: Bool
   }
+  deriving (Show, Eq)
 
 cpu :: CPU
 cpu = CPU register 0 False

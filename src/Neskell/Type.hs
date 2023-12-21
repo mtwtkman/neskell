@@ -26,8 +26,8 @@ data Operand
   deriving (Show, Eq)
 
 type OperandBody0 = ()
-type OperandBody2 = (Word8, Word8)
 type OperandBody1 = Word8
+type OperandBody2 = (Word8, Word8)
 
 data OperandBody
   = OperandBody0 OperandBody0

@@ -9,7 +9,7 @@ import Neskell.CPU.Instruction (
  )
 import Neskell.CPU.Opcode (Opcode (Opcode))
 import Test.Tasty (TestTree, testGroup)
-import Test.Tasty.HUnit
+import Test.Tasty.HUnit ( testCase, (@?=) )
 import Neskell.Type ( Operand(..), OperandBody(..) )
 
 tests :: TestTree

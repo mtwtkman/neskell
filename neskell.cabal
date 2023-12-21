@@ -29,6 +29,7 @@ library
     Neskell.CPU.AddressingMode
     Neskell.CPU.Instruction
     Neskell.CPU.Opcode
+    Neskell.CPU.Opcode.LDA
     Neskell.CPU.Register
     Neskell.CPU.Register.ProcessorStatus
     Neskell.Memory
@@ -46,3 +47,5 @@ test-suite test
     , tasty-hunit
     , neskell
     , vector
+    , QuickCheck
+    , tasty-quickcheck
