@@ -1,0 +1,13 @@
+name: Run tests
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - uses: cachix/install-nix-action@v24
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - run: nix develop
+      - run: cabal update
+      - run: t
