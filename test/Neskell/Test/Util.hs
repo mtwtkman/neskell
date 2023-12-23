@@ -1,8 +1,11 @@
 module Neskell.Test.Util where
 
-import Neskell.CPU (CPU (CPU))
+import Neskell.CPU (CPU (CPU, cpuRegister))
+import Neskell.CPU.Register (Register (regPS), updatePS)
 import Neskell.CPU.Register.ProcessorStatus (ProcessorStatus)
-import Neskell.CPU.Register (updatePS)
 
 transPS :: CPU -> (ProcessorStatus -> ProcessorStatus) -> CPU
 transPS (CPU r c pc) f = CPU (updatePS r f) c pc
+
+ps :: CPU -> ProcessorStatus
+ps = regPS . cpuRegister

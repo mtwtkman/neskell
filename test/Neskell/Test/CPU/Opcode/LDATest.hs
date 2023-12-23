@@ -4,11 +4,16 @@
 module Neskell.Test.CPU.Opcode.LDATest where
 
 import Data.Word (Word8)
-import Neskell.CPU (CPU (CPU, cpuRegister))
+import Neskell.CPU (CPU (cpuRegister))
 import Neskell.CPU.Opcode.LDA (immediate)
-import Neskell.CPU.Register (Register (Register, regA, regPS))
-import Neskell.CPU.Register.ProcessorStatus
-    ( ProcessorStatus(sN, sZ), processorStatus, onZ, onN )
+import Neskell.CPU.Register (Register (regA, regPS))
+import Neskell.CPU.Register.ProcessorStatus (
+  ProcessorStatus (sN, sZ),
+  onN,
+  onZ,
+ )
+import Neskell.Test.Arbitrary ()
+import Neskell.Test.Util (transPS)
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.QuickCheck (
   Arbitrary (arbitrary),
@@ -16,7 +21,6 @@ import Test.Tasty.QuickCheck (
   choose,
   testProperty,
  )
-import Neskell.Test.Util (transPS)
 
 tests :: TestTree
 tests =
@@ -24,23 +28,6 @@ tests =
     "LDA"
     [ prop_immediate
     ]
-
-instance Arbitrary Register where
-  arbitrary =
-    Register
-      <$> arbitrary
-      <*> arbitrary
-      <*> arbitrary
-      <*> arbitrary
-      <*> arbitrary
-      <*> return processorStatus
-
-instance Arbitrary CPU where
-  arbitrary =
-    CPU
-      <$> arbitrary
-      <*> arbitrary
-      <*> arbitrary
 
 newtype AValue = AValue Word8 deriving (Show, Eq)
 instance Arbitrary AValue where

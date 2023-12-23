@@ -29,12 +29,12 @@ library
     Neskell.CPU.AddressingMode
     Neskell.CPU.Instruction
     Neskell.CPU.Opcode
+    Neskell.CPU.Opcode.BRK
     Neskell.CPU.Opcode.LDA
     Neskell.CPU.Register
     Neskell.CPU.Register.ProcessorStatus
     Neskell.Memory
     Neskell.Type
-    Neskell.Util
 
 test-suite test
   import:         warnings, basic

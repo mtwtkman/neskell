@@ -15,10 +15,10 @@ zFlag v reg = updatePS reg (if v == 0 then onZ else offZ)
 nFlag :: Word8 -> Register -> Register
 nFlag v reg = updatePS reg (if testBit v 7 then onN else offN)
 
-flag :: Word8 -> Register -> Register
-flag v = nFlag v . zFlag v
+switchFlag :: Word8 -> Register -> Register
+switchFlag v = nFlag v . zFlag v
 
 immediate :: CPU -> OperandBody1 -> Result CPU
 immediate (CPU r c pc) v = do
   reg <- Right $ forwardProgram Operand1 r
-  return (CPU (loadA v (flag v reg)) c pc)
+  return (CPU (loadA v (switchFlag v reg)) c pc)

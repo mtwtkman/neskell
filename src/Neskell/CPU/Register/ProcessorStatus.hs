@@ -31,3 +31,6 @@ onN (ProcessorStatus c z i d b v _) = ProcessorStatus c z i d b v True
 
 offN :: ProcessorStatus -> ProcessorStatus
 offN (ProcessorStatus c z i d b v _) = ProcessorStatus c z i d b v False
+
+onB :: ProcessorStatus -> ProcessorStatus
+onB (ProcessorStatus c z i d _ v n) = ProcessorStatus c z i d True v n
