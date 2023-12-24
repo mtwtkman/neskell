@@ -1,4 +1,4 @@
-module Neskell.CPU.Opcode.BRK where
+module Neskell.CPU.Opcode.BRK (implied) where
 
 import Neskell.CPU (CPU (CPU))
 import Neskell.CPU.Register (forwardProgram, updatePS)

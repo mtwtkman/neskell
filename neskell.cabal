@@ -31,6 +31,7 @@ library
     Neskell.CPU.Opcode
     Neskell.CPU.Opcode.BRK
     Neskell.CPU.Opcode.LDA
+    Neskell.CPU.Opcode.TAX
     Neskell.CPU.Register
     Neskell.CPU.Register.ProcessorStatus
     Neskell.Memory

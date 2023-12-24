@@ -1,6 +1,6 @@
 {-# LANGUAGE BinaryLiterals #-}
 
-module Neskell.CPU.Opcode.LDA where
+module Neskell.CPU.Opcode.LDA (immediate) where
 
 import Data.Bits (testBit)
 import Data.Word (Word8)

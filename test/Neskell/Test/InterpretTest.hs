@@ -1,4 +1,4 @@
-module Neskell.Test.InterpretTest where
+module Neskell.Test.InterpretTest (tests) where
 
 import qualified Data.Vector as V
 import Neskell.CPU (Program (Program), readInstruction)
@@ -8,9 +8,9 @@ import Neskell.CPU.Instruction (
   Official (..),
  )
 import Neskell.CPU.Opcode (Opcode (Opcode))
+import Neskell.Type (Operand (..), OperandBody (..))
 import Test.Tasty (TestTree, testGroup)
-import Test.Tasty.HUnit ( testCase, (@?=) )
-import Neskell.Type ( Operand(..), OperandBody(..) )
+import Test.Tasty.HUnit (testCase, (@?=))
 
 tests :: TestTree
 tests =

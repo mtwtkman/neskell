@@ -1,9 +1,8 @@
 {-# LANGUAGE BinaryLiterals #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
-module Neskell.Test.CPU.Opcode.LDATest where
+module Neskell.Test.CPU.Opcode.LDATest (tests) where
 
-import Data.Word (Word8)
 import Neskell.CPU (CPU (cpuRegister))
 import Neskell.CPU.Opcode.LDA (immediate)
 import Neskell.CPU.Register (Register (regA, regPS))
@@ -12,15 +11,10 @@ import Neskell.CPU.Register.ProcessorStatus (
   onN,
   onZ,
  )
-import Neskell.Test.Arbitrary ()
+import Neskell.Test.Arbitrary
 import Neskell.Test.Util (transPS)
 import Test.Tasty (TestTree, testGroup)
-import Test.Tasty.QuickCheck (
-  Arbitrary (arbitrary),
-  NonZero (NonZero),
-  choose,
-  testProperty,
- )
+import Test.Tasty.QuickCheck (testProperty)
 
 tests :: TestTree
 tests =
@@ -28,18 +22,6 @@ tests =
     "LDA"
     [ prop_immediate
     ]
-
-newtype AValue = AValue Word8 deriving (Show, Eq)
-instance Arbitrary AValue where
-  arbitrary = AValue <$> choose (0, 255)
-
-newtype Bit7SetAValue = Bit7SetAValue Word8 deriving (Show, Eq)
-instance Arbitrary Bit7SetAValue where
-  arbitrary = Bit7SetAValue <$> choose (128, 255)
-
-newtype Bit7UnsetAValue = Bit7UnsetAValue Word8 deriving (Show, Eq)
-instance Arbitrary Bit7UnsetAValue where
-  arbitrary = Bit7UnsetAValue <$> choose (0, 127)
 
 prop_immediate :: TestTree
 prop_immediate =
@@ -50,18 +32,18 @@ prop_immediate =
         [ testProperty "0 value causes setting Zero flag"
             $ \cpu -> zeroFlagTest cpu 0 == Right True
         , testProperty "non-0 value causes unsetting Zero flag"
-            $ \cpu (NonZero v) -> zeroFlagTest (transPS cpu onZ) v == Right False
+            $ \cpu (NonZeroRegisterValue v) -> zeroFlagTest (transPS cpu onZ) v == Right False
         ]
     , testGroup
         "Negative flag"
         [ testProperty "set bit 7 causes setting Negative flag"
-            $ \cpu (Bit7SetAValue v) -> negativeFlagTest cpu v == Right True
+            $ \cpu (Bit7SetRegisterValue v) -> negativeFlagTest cpu v == Right True
         , testProperty "unset bit 7 causes unsetting Negative flag"
-            $ \cpu (Bit7UnsetAValue v) -> negativeFlagTest (transPS cpu onN) v == Right False
+            $ \cpu (Bit7UnsetRegisterValue v) -> negativeFlagTest (transPS cpu onN) v == Right False
         ]
-    , testProperty "load value"
-        $ \cpu (AValue v) -> fmap (regA . cpuRegister) (immediate (cpu :: CPU) v) == Right v
+    , testProperty "load value to an accumulator"
+        $ \cpu (RegisterValue v) -> fmap (regA . cpuRegister) (immediate (cpu :: CPU) v) == Right v
     ]
  where
-  zeroFlagTest cpu v = fmap (sZ . regPS . cpuRegister) (immediate (cpu :: CPU) v)
-  negativeFlagTest cpu v = fmap (sN . regPS . cpuRegister) (immediate (cpu :: CPU) v)
+  zeroFlagTest cpu v = fmap (sZ . regPS . cpuRegister) (immediate cpu v)
+  negativeFlagTest cpu v = fmap (sN . regPS . cpuRegister) (immediate cpu v)

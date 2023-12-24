@@ -1,4 +1,4 @@
-module Neskell.Test.CPU.Opcode.BRKTest where
+module Neskell.Test.CPU.Opcode.BRKTest (tests) where
 
 import Neskell.CPU (CPU)
 import Neskell.CPU.Opcode.BRK (implied)
