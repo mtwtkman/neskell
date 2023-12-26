@@ -6,6 +6,6 @@ import Neskell.CPU.Register.ProcessorStatus (onB)
 import Neskell.Type (Operand (Operand0), Result)
 
 implied :: CPU -> Result CPU
-implied (CPU r c pc) = do
+implied (CPU r c pc m) = do
   reg <- Right $ forwardProgram Operand0 r
-  return (CPU (updatePS reg onB) c pc)
+  return (CPU (updatePS reg onB) c pc m)

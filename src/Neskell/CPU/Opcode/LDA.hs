@@ -19,6 +19,6 @@ switchFlag :: Word8 -> Register -> Register
 switchFlag v = nFlag v . zFlag v
 
 immediate :: CPU -> OperandBody1 -> Result CPU
-immediate (CPU r c pc) v = do
+immediate (CPU r c pc m) v = do
   reg <- Right $ forwardProgram Operand1 r
-  return (CPU (loadA v (switchFlag v reg)) c pc)
+  return (CPU (loadA v (switchFlag v reg)) c pc m)

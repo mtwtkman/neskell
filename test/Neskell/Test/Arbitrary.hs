@@ -6,8 +6,13 @@ import Data.Word (Word8)
 import Neskell.CPU (CPU (CPU))
 import Neskell.CPU.Register (Register (Register))
 import Neskell.CPU.Register.ProcessorStatus (processorStatus)
+import Neskell.Memory (Memory (Memory))
 import Test.QuickCheck (Arbitrary, choose)
 import Test.Tasty.QuickCheck (Arbitrary (arbitrary))
+
+instance Arbitrary Memory where
+  arbitrary =
+    Memory <$> arbitrary <*> arbitrary
 
 instance Arbitrary Register where
   arbitrary =
@@ -23,6 +28,7 @@ instance Arbitrary CPU where
   arbitrary =
     CPU
       <$> arbitrary
+      <*> arbitrary
       <*> arbitrary
       <*> arbitrary
 

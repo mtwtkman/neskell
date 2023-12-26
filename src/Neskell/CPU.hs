@@ -17,16 +17,18 @@ import Neskell.Type (
   OperandBody,
   Result,
  )
+import Neskell.Memory (Memory, memory)
 
 data CPU = CPU
   { cpuRegister :: Register
   , cpuCycles :: Int
   , cpuPageCrossing :: Bool
+  , cpuMemory :: Memory
   }
   deriving (Show, Eq)
 
 cpu :: CPU
-cpu = CPU register 0 False
+cpu = CPU register 0 False memory
 
 data Program = Program
   { programOpCode :: Opcode
@@ -35,8 +37,8 @@ data Program = Program
   deriving (Eq, Show)
 
 setPageCrossed :: CPU -> Word16 -> Word16 -> CPU
-setPageCrossed x@(CPU _ _ True) _ _ = x
-setPageCrossed (CPU r c _) a b = CPU r c (a .&. 0xff00 /= b .&. 0xff00)
+setPageCrossed x@(CPU _ _ True _) _ _ = x
+setPageCrossed (CPU r c _  m) a b = CPU r c (a .&. 0xff00 /= b .&. 0xff00) m
 
 decodeOpcode :: V.Vector Word8 -> Result Opcode
 decodeOpcode program =
@@ -63,6 +65,3 @@ process c p =
 
 processOfficial :: CPU -> Official -> OperandBody -> Result CPU
 processOfficial = undefined
-
-interpret :: CPU -> V.Vector Word16 -> CPU
-interpret c p = undefined

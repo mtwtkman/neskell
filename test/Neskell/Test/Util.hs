@@ -9,10 +9,10 @@ import Neskell.CPU.Register (
 import Neskell.CPU.Register.ProcessorStatus (ProcessorStatus)
 
 transPS :: CPU -> (ProcessorStatus -> ProcessorStatus) -> CPU
-transPS (CPU r c pc) f = CPU (updatePS r f) c pc
+transPS (CPU r c pc m) f = CPU (updatePS r f) c pc m
 
 setRegister :: CPU -> (Register -> Register) -> CPU
-setRegister (CPU r c pc) f = CPU (f r) c pc
+setRegister (CPU r c pc m) f = CPU (f r) c pc m
 
 setRegA :: Word8 -> CPU -> CPU
 setRegA v c = setRegister c (\(Register pc sp _ x y p) -> Register pc sp v x y p)
