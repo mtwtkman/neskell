@@ -10,6 +10,7 @@ import Neskell.CPU.Opcode (
   toOpcode,
  )
 import Neskell.CPU.Register (Register, register)
+import Neskell.Memory (Memory, memory)
 import Neskell.Type (
   DecodeError (OpcodeNotFound),
   Error (DecodeError, OpcodeError),
@@ -17,7 +18,6 @@ import Neskell.Type (
   OperandBody,
   Result,
  )
-import Neskell.Memory (Memory, memory)
 
 data CPU = CPU
   { cpuRegister :: Register
@@ -42,7 +42,7 @@ data Program = Program
 
 setPageCrossed :: CPU -> Word16 -> Word16 -> CPU
 setPageCrossed x@(CPU _ _ True _ _) _ _ = x
-setPageCrossed (CPU r c _  m p) a b = CPU r c (a .&. 0xff00 /= b .&. 0xff00) m p
+setPageCrossed x@(CPU{}) a b = x{cpuPageCrossing = a .&. 0xff00 /= b .&. 0xff00}
 
 decodeOpcode :: V.Vector Word8 -> Result Opcode
 decodeOpcode program =

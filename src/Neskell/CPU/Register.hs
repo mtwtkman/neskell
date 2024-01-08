@@ -16,7 +16,7 @@ data Register = Register
   deriving (Show, Eq)
 
 moveProgramCounter :: (Word16 -> Word16 -> Word16) -> Operand -> Register -> Register
-moveProgramCounter direction op (Register pc sp a x y ps) = Register (direction pc (toProgramSize op)) sp a x y ps
+moveProgramCounter direction op reg@(Register{regPC = pc}) = reg{regPC = direction pc (toProgramSize op)}
 
 forwardProgram :: Operand -> Register -> Register
 forwardProgram = moveProgramCounter (+)
@@ -28,7 +28,7 @@ register :: Register
 register = Register 0 0 0 0 0 processorStatus
 
 updatePS :: Register -> (ProcessorStatus -> ProcessorStatus) -> Register
-updatePS (Register pc sp a x y ps) f = Register pc sp a x y (f ps)
+updatePS reg@(Register{regPS = ps}) f = reg{regPS = f ps}
 
 loadA :: Word8 -> Register -> Register
-loadA n (Register pc sp _ x y ps) = Register pc sp n x y ps
+loadA n reg@(Register{}) = reg{regA = n}
