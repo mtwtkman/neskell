@@ -10,20 +10,20 @@ import Neskell.CPU.Opcode (
   toOpcode,
  )
 import Neskell.CPU.Register (Register, register)
-import Neskell.Memory (Memory, memory)
 import Neskell.Type (
   DecodeError (OpcodeNotFound),
   Error (DecodeError, OpcodeError),
   OpcodeError (UnofficialOpcodeNotSupported),
   OperandBody,
   Result,
+  Program,
  )
 
 data CPU = CPU
   { cpuRegister :: Register
   , cpuCycles :: Int
   , cpuPageCrossing :: Bool
-  , cpuMemory :: Memory
+  , cpuProgram :: Maybe Program
   , cpuProgramCounter :: Word16
   }
   deriving (Show, Eq)
@@ -32,9 +32,9 @@ initialProgramCounter :: Word16
 initialProgramCounter = 0x8000
 
 cpu :: CPU
-cpu = CPU register 0 False memory initialProgramCounter
+cpu = CPU register 0 False Nothing initialProgramCounter
 
-data Program = Program
+data Operation = Operation
   { programOpCode :: Opcode
   , programOperand :: OperandBody
   }
@@ -49,7 +49,7 @@ decodeOpcode program =
   let x = V.head program
    in toOpcode x
 
-readInstruction :: V.Vector Word8 -> Result (Maybe Program, V.Vector Word8)
+readInstruction :: V.Vector Word8 -> Result (Maybe Operation, V.Vector Word8)
 readInstruction src =
   if V.null src
     then Right (Nothing, src)
@@ -59,9 +59,9 @@ readInstruction src =
         Just (h, t) -> do
           op <- toOpcode h
           (rest, operand) <- reifyByte (opBytesSize op) t
-          return (Just $ Program op operand, rest)
+          return (Just $ Operation op operand, rest)
 
-process :: CPU -> Program -> Result CPU
+process :: CPU -> Operation -> Result CPU
 process c p =
   case opInstruction $ programOpCode p of
     Official op -> processOfficial c op (programOperand p)
@@ -69,3 +69,4 @@ process c p =
 
 processOfficial :: CPU -> Official -> OperandBody -> Result CPU
 processOfficial = undefined
+

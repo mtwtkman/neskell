@@ -1,6 +1,7 @@
 module Neskell.Type where
 
 import Data.Word (Word8)
+import Data.Vector (Vector)
 
 type Result a = Either Error a
 
@@ -39,3 +40,5 @@ toProgramSize :: (Num n) => Operand -> n
 toProgramSize Operand0 = 1
 toProgramSize Operand1 = 2
 toProgramSize Operand2 = 3
+
+type Program = Vector Word8

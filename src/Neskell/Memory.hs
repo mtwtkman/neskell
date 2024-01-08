@@ -1,12 +1,10 @@
 module Neskell.Memory where
 
-import Data.Word (Word16, Word8)
+import Data.Word (Word8)
+import Data.Vector (Vector)
 
-data Memory = Memory
-  { memVolume :: Word16
-  , memContents :: [Word8]
-  }
+newtype Memory = Memory (Vector Word8)
   deriving (Show, Eq)
 
-memory :: Memory
-memory = Memory 0xffff []
+load :: Vector Word8 -> Memory
+load = Memory
