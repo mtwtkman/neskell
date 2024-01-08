@@ -31,6 +31,7 @@ instance Arbitrary CPU where
       <*> arbitrary
       <*> arbitrary
       <*> arbitrary
+      <*> arbitrary
 
 newtype RegisterValue = RegisterValue Word8 deriving (Show, Eq)
 instance Arbitrary RegisterValue where

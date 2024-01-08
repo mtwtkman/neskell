@@ -4,7 +4,7 @@ module Neskell.CPU.Opcode.LDA (immediate) where
 
 import Data.Bits (testBit)
 import Data.Word (Word8)
-import Neskell.CPU (CPU (CPU))
+import Neskell.CPU (CPU (CPU, cpuRegister))
 import Neskell.CPU.Register (Register, forwardProgram, loadA, updatePS)
 import Neskell.CPU.Register.ProcessorStatus (offN, offZ, onN, onZ)
 import Neskell.Type (Operand (Operand1), OperandBody1, Result)
@@ -19,6 +19,6 @@ switchFlag :: Word8 -> Register -> Register
 switchFlag v = nFlag v . zFlag v
 
 immediate :: CPU -> OperandBody1 -> Result CPU
-immediate (CPU r c pc m) v = do
-  reg <- Right $ forwardProgram Operand1 r
-  return (CPU (loadA v (switchFlag v reg)) c pc m)
+immediate cpu@(CPU{cpuRegister = reg}) v = do
+  reg' <- Right $ forwardProgram Operand1 reg
+  return cpu{cpuRegister = loadA v (switchFlag v reg')}

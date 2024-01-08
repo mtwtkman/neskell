@@ -1,7 +1,7 @@
 module Neskell.CPU.Opcode.TAX (implied) where
 
 import Data.Bits (Bits (testBit))
-import Neskell.CPU (CPU (CPU))
+import Neskell.CPU (CPU (CPU, cpuRegister))
 import Neskell.CPU.Register (Register (Register), forwardProgram, updatePS)
 import Neskell.CPU.Register.ProcessorStatus (offN, offZ, onN, onZ)
 import Neskell.Type (Operand (Operand0), Result)
@@ -19,6 +19,6 @@ copyA :: Register -> Result Register
 copyA (Register pc sp a _ y ps) = Right $ Register pc sp a a y ps
 
 implied :: CPU -> Result CPU
-implied (CPU r c pc m) = do
-  reg <- copyA $ forwardProgram Operand0 r
-  return $ CPU (switchFlag reg) c pc m
+implied cpu@(CPU{cpuRegister = reg}) = do
+  reg' <- copyA $ forwardProgram Operand0 reg
+  return $ cpu{cpuRegister = switchFlag reg'}

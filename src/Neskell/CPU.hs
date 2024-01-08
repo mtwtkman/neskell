@@ -24,11 +24,15 @@ data CPU = CPU
   , cpuCycles :: Int
   , cpuPageCrossing :: Bool
   , cpuMemory :: Memory
+  , cpuProgramCounter :: Word16
   }
   deriving (Show, Eq)
 
+initialProgramCounter :: Word16
+initialProgramCounter = 0x8000
+
 cpu :: CPU
-cpu = CPU register 0 False memory
+cpu = CPU register 0 False memory initialProgramCounter
 
 data Program = Program
   { programOpCode :: Opcode
@@ -37,8 +41,8 @@ data Program = Program
   deriving (Eq, Show)
 
 setPageCrossed :: CPU -> Word16 -> Word16 -> CPU
-setPageCrossed x@(CPU _ _ True _) _ _ = x
-setPageCrossed (CPU r c _  m) a b = CPU r c (a .&. 0xff00 /= b .&. 0xff00) m
+setPageCrossed x@(CPU _ _ True _ _) _ _ = x
+setPageCrossed (CPU r c _  m p) a b = CPU r c (a .&. 0xff00 /= b .&. 0xff00) m p
 
 decodeOpcode :: V.Vector Word8 -> Result Opcode
 decodeOpcode program =
