@@ -1,9 +1,16 @@
 module Neskell.Type where
 
-import Data.Word (Word8)
 import Data.Vector (Vector)
+import Data.Word (Word8)
 
 type Result a = Either Error a
+
+data ProgramError
+  = ProgramLengthOverflow
+  | ProgramLengthUnderflow
+  | ProgramNotLoaded
+  | ProgramCannotLoad
+  deriving (Show, Eq)
 
 data OpcodeError
   = UnknownOpcode
@@ -18,6 +25,7 @@ data DecodeError
 data Error
   = OpcodeError OpcodeError
   | DecodeError DecodeError
+  | ProgramError ProgramError
   deriving (Show, Eq)
 
 data Operand

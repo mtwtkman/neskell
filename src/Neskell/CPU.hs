@@ -12,11 +12,17 @@ import Neskell.CPU.Opcode (
 import Neskell.CPU.Register (Register, register)
 import Neskell.Type (
   DecodeError (OpcodeNotFound),
-  Error (DecodeError, OpcodeError),
+  Error (DecodeError, OpcodeError, ProgramError),
   OpcodeError (UnofficialOpcodeNotSupported),
   OperandBody,
-  Result,
   Program,
+  ProgramError (
+    ProgramCannotLoad,
+    ProgramLengthOverflow,
+    ProgramLengthUnderflow,
+    ProgramNotLoaded
+  ),
+  Result,
  )
 
 data CPU = CPU
@@ -29,7 +35,7 @@ data CPU = CPU
   deriving (Show, Eq)
 
 initialProgramCounter :: Word16
-initialProgramCounter = 0x8000
+initialProgramCounter = 0x0
 
 cpu :: CPU
 cpu = CPU register 0 False Nothing initialProgramCounter
@@ -70,3 +76,17 @@ process c p =
 processOfficial :: CPU -> Official -> OperandBody -> Result CPU
 processOfficial = undefined
 
+loadProgram :: CPU -> Program -> Result CPU
+loadProgram c p
+  | V.length p > 0xffff = Left (ProgramError ProgramLengthOverflow)
+  | V.length p == 0 = Left (ProgramError ProgramLengthUnderflow)
+  | otherwise = Right c{cpuProgram = Just p}
+
+initialLoad :: Program -> Result CPU
+initialLoad = loadProgram cpu
+
+readProgram :: CPU -> Result Word8
+readProgram (CPU{cpuProgram = Nothing}) = Left (ProgramError ProgramNotLoaded)
+readProgram (CPU{cpuProgram = Just p, cpuProgramCounter = c}) = case p V.!? fromIntegral (toInteger c) of
+  Nothing -> Left (ProgramError ProgramCannotLoad)
+  Just x -> Right x
