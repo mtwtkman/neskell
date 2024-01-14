@@ -10,12 +10,13 @@ import Neskell.CPU.Opcode (
   toOpcode,
  )
 import Neskell.CPU.Register (Register, register)
+import Neskell.Memory (Memory (Memory))
+import qualified Neskell.Memory as M
 import Neskell.Type (
   DecodeError (OpcodeNotFound),
   Error (DecodeError, OpcodeError, ProgramError),
   OpcodeError (UnofficialOpcodeNotSupported),
   OperandBody,
-  Program,
   ProgramError (
     ProgramCannotLoad,
     ProgramLengthOverflow,
@@ -29,7 +30,7 @@ data CPU = CPU
   { cpuRegister :: Register
   , cpuCycles :: Int
   , cpuPageCrossing :: Bool
-  , cpuProgram :: Maybe Program
+  , cpuProgram :: Maybe Memory
   , cpuProgramCounter :: Word16
   }
   deriving (Show, Eq)
@@ -44,7 +45,7 @@ data Operation = Operation
   { programOpCode :: Opcode
   , programOperand :: OperandBody
   }
-  deriving (Eq, Show)
+  deriving (Show, Eq)
 
 setPageCrossed :: CPU -> Word16 -> Word16 -> CPU
 setPageCrossed x@(CPU _ _ True _ _) _ _ = x
@@ -67,6 +68,9 @@ readInstruction src =
           (rest, operand) <- reifyByte (opBytesSize op) t
           return (Just $ Operation op operand, rest)
 
+readMemory :: CPU -> Word16 -> Result (Word8, Word8)
+readMemory c pos = undefined
+
 process :: CPU -> Operation -> Result CPU
 process c p =
   case opInstruction $ programOpCode p of
@@ -76,17 +80,17 @@ process c p =
 processOfficial :: CPU -> Official -> OperandBody -> Result CPU
 processOfficial = undefined
 
-loadProgram :: CPU -> Program -> Result CPU
+loadProgram :: CPU -> Memory -> Result CPU
 loadProgram c p
-  | V.length p > 0xffff = Left (ProgramError ProgramLengthOverflow)
-  | V.length p == 0 = Left (ProgramError ProgramLengthUnderflow)
+  | M.length p > 0xffff = Left (ProgramError ProgramLengthOverflow)
+  | M.length p == 0 = Left (ProgramError ProgramLengthUnderflow)
   | otherwise = Right c{cpuProgram = Just p}
 
-initialLoad :: Program -> Result CPU
+initialLoad :: Memory -> Result CPU
 initialLoad = loadProgram cpu
 
 readProgram :: CPU -> Result Word8
 readProgram (CPU{cpuProgram = Nothing}) = Left (ProgramError ProgramNotLoaded)
-readProgram (CPU{cpuProgram = Just p, cpuProgramCounter = c}) = case p V.!? fromIntegral (toInteger c) of
+readProgram (CPU{cpuProgram = Just (Memory p), cpuProgramCounter = c}) = case p V.!? fromIntegral (toInteger c) of
   Nothing -> Left (ProgramError ProgramCannotLoad)
   Just x -> Right x

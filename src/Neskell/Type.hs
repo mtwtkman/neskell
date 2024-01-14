@@ -48,5 +48,3 @@ toProgramSize :: (Num n) => Operand -> n
 toProgramSize Operand0 = 1
 toProgramSize Operand1 = 2
 toProgramSize Operand2 = 3
-
-type Program = Vector Word8

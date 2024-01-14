@@ -9,6 +9,7 @@ import Neskell.CPU.Register (Register (Register))
 import Neskell.CPU.Register.ProcessorStatus (processorStatus)
 import Test.QuickCheck (Arbitrary, choose, listOf)
 import Test.Tasty.QuickCheck (Arbitrary (arbitrary))
+import Neskell.Memory (Memory (Memory))
 
 instance Arbitrary Register where
   arbitrary =
@@ -22,6 +23,9 @@ instance Arbitrary Register where
 
 instance Arbitrary a => Arbitrary (V.Vector a) where
   arbitrary = V.fromList <$> listOf arbitrary
+
+instance Arbitrary Memory where
+  arbitrary = Memory <$> arbitrary
 
 instance Arbitrary CPU where
   arbitrary =

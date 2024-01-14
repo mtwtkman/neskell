@@ -21,8 +21,7 @@ executable neskell
 library
   import:          warnings, basic
   hs-source-dirs:  src
-  build-depends:
-    vector
+  build-depends:   vector
   exposed-modules:
     Neskell
     Neskell.CPU
@@ -44,9 +43,10 @@ test-suite test
   hs-source-dirs: test
   build-depends:
     , HUnit
+    , neskell
+    , QuickCheck
     , tasty
     , tasty-hunit
-    , neskell
-    , vector
-    , QuickCheck
     , tasty-quickcheck
+    , vector
+
