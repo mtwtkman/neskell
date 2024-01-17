@@ -36,7 +36,7 @@ data CPU = CPU
   deriving (Show, Eq)
 
 initialProgramCounter :: Word16
-initialProgramCounter = 0x0
+initialProgramCounter = 0
 
 cpu :: CPU
 cpu = CPU register 0 False Nothing initialProgramCounter
