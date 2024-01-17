@@ -1,9 +1,12 @@
 module Neskell.Type where
 
-import Data.Vector (Vector)
 import Data.Word (Word8)
 
 type Result a = Either Error a
+
+data MemoryError
+  = OutOfRangeMemory
+  deriving (Show, Eq)
 
 data ProgramError
   = ProgramLengthOverflow
@@ -26,6 +29,7 @@ data Error
   = OpcodeError OpcodeError
   | DecodeError DecodeError
   | ProgramError ProgramError
+  | MemoryError MemoryError
   deriving (Show, Eq)
 
 data Operand

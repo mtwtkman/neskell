@@ -68,9 +68,6 @@ readInstruction src =
           (rest, operand) <- reifyByte (opBytesSize op) t
           return (Just $ Operation op operand, rest)
 
-readMemory :: CPU -> Word16 -> Result (Word8, Word8)
-readMemory c pos = undefined
-
 process :: CPU -> Operation -> Result CPU
 process c p =
   case opInstruction $ programOpCode p of
